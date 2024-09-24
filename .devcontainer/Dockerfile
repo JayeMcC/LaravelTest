@@ -6,7 +6,7 @@ ENV TZ=Australia/Perth
 # Set the working directory for your app
 WORKDIR /var/www/html
 
-# Install system dependencies and PHP extensions manually
+# Install system dependencies, PHP extensions, and supervisor
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     curl \
@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
+    supervisor \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update && apt-get install -y \
     php8.2 \
@@ -52,8 +53,12 @@ RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 # Set folder permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Configure supervisor to manage the Laravel queue worker
+RUN mkdir -p /etc/supervisor/conf.d
+COPY ./supervisord.conf /etc/supervisor/conf.d/laravel-worker.conf
+
 # Expose port 8000 for Laravel's built-in server
 EXPOSE 8000
 
-# Start Laravel's development server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start Supervisor to manage Laravel server and queue worker
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

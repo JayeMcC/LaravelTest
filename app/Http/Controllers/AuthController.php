@@ -2,63 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // GET /api/users/{id} (get a specific user)
-    public function getUser($id)
+    // POST /api/register
+    public function register(RegisterRequest $request)
     {
-        $user = User::findOrFail($id);
-        return response()->json($user);
-    }
-
-    // POST /api/register (register a new user)
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
+        return response()->json(['message' => 'User registered successfully'], 201);
     }
 
-    // POST /api/login (login a user)
+    // POST /api/login
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['message' => 'Login successful', 'token' => $token]);
+        return response()->json(['token' => $token], 200);
     }
 
-    // POST /api/logout (logout a user)
+    // POST /api/logout
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
+
+        return response()->json(['message' => 'Successfully logged out'], 200);
+    }
+
+    // GET /api/users/{id}
+    public function getUser($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        return response()->json($user, 200);
     }
 }
