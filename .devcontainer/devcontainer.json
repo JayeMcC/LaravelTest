@@ -1,0 +1,21 @@
+{
+    "name": "Laravel Dev Container",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/var/www/html",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-php.php-pack",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/bin/php",
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.shell.linux": "/bin/zsh"
+            }
+        }
+    },
+    "forwardPorts": [8000],
+    "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate",
+}
