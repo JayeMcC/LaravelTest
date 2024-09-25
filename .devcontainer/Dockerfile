@@ -55,7 +55,7 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Configure supervisor to manage the Laravel queue worker
 RUN mkdir -p /etc/supervisor/conf.d
-COPY ./supervisord.conf /etc/supervisor/conf.d/laravel-worker.conf
+COPY .devcontainer/supervisord.conf /etc/supervisor/conf.d/laravel-worker.conf
 
 # Expose port 8000 for Laravel's built-in server
 EXPOSE 8000
