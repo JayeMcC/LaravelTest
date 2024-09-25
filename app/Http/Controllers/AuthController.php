@@ -1,16 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    // POST /api/register
-    public function register(RegisterRequest $request)
+    /**
+     * Register a new user.
+     *
+     * @param  RegisterRequest  $request
+     * @return JsonResponse
+     */
+    public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create([
             'name' => $request->name,
@@ -21,8 +30,13 @@ class AuthController extends Controller
         return response()->json(['message' => 'User registered successfully'], 201);
     }
 
-    // POST /api/login
-    public function login(Request $request)
+    /**
+     * Log in a user and issue a token.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -40,16 +54,26 @@ class AuthController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    // POST /api/logout
-    public function logout(Request $request)
+    /**
+     * Log out the authenticated user and revoke their token.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function logout(Request $request): Response
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        return response()->noContent();
     }
 
-    // GET /api/users/{id}
-    public function getUser($id)
+    /**
+     * Get a specific user's profile by ID.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function getUser(int $id): JsonResponse
     {
         $user = User::find($id);
 

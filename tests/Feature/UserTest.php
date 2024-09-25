@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -10,7 +12,6 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    // Test registering a new user
     public function test_can_register_user()
     {
         $response = $this->postJson('/api/register', [
@@ -24,7 +25,6 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
 
-    // Test logging in a user
     public function test_can_login_user()
     {
         $user = User::factory()->create(['password' => bcrypt('password')]);
@@ -38,7 +38,6 @@ class UserTest extends TestCase
         $response->assertJsonStructure(['token']);
     }
 
-    // Test getting a specific user
     public function test_can_get_specific_user()
     {
         $user = User::factory()->create();
@@ -49,9 +48,9 @@ class UserTest extends TestCase
         $response->assertJson(['id' => $user->id]);
     }
 
-    // Test logging out a user
     public function test_can_logout_user()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $this->actingAs($user, 'sanctum');
 

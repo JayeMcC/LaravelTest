@@ -27,14 +27,14 @@ class SendWelcomeEmailCommand extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $userId = $this->argument('user_id');
         $user = User::find($userId);
 
         if (!$user) {
             $this->error('User not found.');
-            return 1;
+            return 1; // Return non-zero to indicate failure
         }
 
         // Dispatch the job to send the welcome email
@@ -42,6 +42,6 @@ class SendWelcomeEmailCommand extends Command
 
         $this->info("Welcome email sent to user: {$user->email}");
 
-        return 0;
+        return 0; // Return 0 to indicate success
     }
 }

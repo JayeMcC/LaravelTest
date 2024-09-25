@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Models\Comment;
@@ -15,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
+     *
+     * This method is used to bind any classes or services into the service container.
+     *
+     * @return void
      */
     public function register(): void
     {
@@ -23,9 +29,15 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * This method is used to register model policies and perform other 
+     * bootstrapping tasks that should run after all services have been registered.
+     *
+     * @return void
      */
     public function boot(): void
     {
+        // Register the policies for the respective models
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Post::class, PostPolicy::class);
         Gate::policy(User::class, UserPolicy::class);

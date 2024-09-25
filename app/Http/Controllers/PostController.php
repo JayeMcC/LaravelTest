@@ -1,22 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
 {
-    // GET /api/posts (list all posts with pagination)
-    public function index(Request $request)
+
+    use AuthorizesRequests;
+
+    /**
+     * List all posts with pagination.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function index(Request $request): JsonResponse
     {
         $posts = Post::paginate(10);
         return response()->json($posts, 200);
     }
 
-    // GET /api/posts/{id}
-    public function show($id)
+    /**
+     * Show a specific post by ID.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
     {
         $post = Post::find($id);
 
@@ -27,8 +45,13 @@ class PostController extends Controller
         return response()->json($post, 200);
     }
 
-    // POST /api/posts
-    public function store(PostRequest $request)
+    /**
+     * Create a new post.
+     *
+     * @param  PostRequest  $request
+     * @return JsonResponse
+     */
+    public function store(PostRequest $request): JsonResponse
     {
         $post = Post::create([
             'title' => $request->title,
@@ -39,8 +62,14 @@ class PostController extends Controller
         return response()->json($post, 201); // 201 Created
     }
 
-    // PATCH /api/posts/{id}
-    public function update(PostRequest $request, $id)
+    /**
+     * Update an existing post by ID.
+     *
+     * @param  PostRequest  $request
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function update(PostRequest $request, int $id): JsonResponse
     {
         $post = Post::find($id);
 
@@ -55,8 +84,13 @@ class PostController extends Controller
         return response()->json($post, 200); // 200 OK
     }
 
-    // DELETE /api/posts/{id}
-    public function destroy($id)
+    /**
+     * Delete a specific post by ID.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
         $post = Post::find($id);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\User;
@@ -31,6 +33,6 @@ class WelcomeMail extends Mailable
     public function build()
     {
         return $this->subject('Welcome to our platform!')
-                    ->view('emails.welcome');
+            ->view('emails.welcome');
     }
 }
