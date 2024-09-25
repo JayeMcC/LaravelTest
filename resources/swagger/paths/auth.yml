@@ -1,0 +1,31 @@
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/User.yml'
+      responses:
+        '201':
+          description: User registered
+  /login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/User.yml'
+      responses:
+        '200':
+          description: User logged in
+  /logout:
+    post:
+      summary: Logout the authenticated user
+      responses:
+        '204':
+          description: User logged out

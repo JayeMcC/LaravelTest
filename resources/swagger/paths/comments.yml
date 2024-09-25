@@ -1,0 +1,97 @@
+paths:
+  /posts/{post}/comments:
+    get:
+      summary: Get all comments for a post
+      parameters:
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../schemas/Comment.yml'
+
+    post:
+      summary: Create a comment for a post
+      parameters:
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Comment.yml'
+      responses:
+        '201':
+          description: Comment created
+
+  /posts/{post}/comments/{comment}:
+    get:
+      summary: Get a specific comment
+      parameters:
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: comment
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A comment
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/Comment.yml'
+    patch:
+      summary: Update a specific comment
+      parameters:
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: comment
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Comment.yml'
+      responses:
+        '200':
+          description: Comment updated
+    delete:
+      summary: Delete a specific comment
+      parameters:
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: comment
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Comment deleted

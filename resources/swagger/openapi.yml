@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: Laravel API Documentation
+  version: 1.0.0
+  description: This is the API documentation for your Laravel project.
+servers:
+  - url: http://localhost/api
+    description: Local development server
+
+paths:
+  /posts:
+    $ref: './paths/posts.yml#/paths/~1posts'
+  /posts/{id}:
+    $ref: './paths/posts.yml#/paths/~1posts~1{id}'
+  /posts/{post}/comments:
+    $ref: './paths/comments.yml#/paths/~1posts~1{post}~1comments'
+  /posts/{post}/comments/{comment}:
+    $ref: './paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}'
+  /register:
+    $ref: './paths/auth.yml#/paths/~1register'
+  /login:
+    $ref: './paths/auth.yml#/paths/~1login'
+  /logout:
+    $ref: './paths/auth.yml#/paths/~1logout'
+  /users/{id}:
+    $ref: './paths/users.yml#/paths/~1users~1{id}'
+
+components:
+  schemas:
+    Post:
+      $ref: './schemas/Post.yml'
+    Comment:
+      $ref: './schemas/Comment.yml'
+    User:
+      $ref: './schemas/User.yml'
