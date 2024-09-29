@@ -16,12 +16,12 @@ class AuthTest extends TestCase
   public function test_user_can_log_in_and_receive_token()
   {
     $user = User::factory()->create([
-      'email' => 'john.doe@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => bcrypt('password123'),
     ]);
 
     $response = $this->postJson('/api/login', [
-      'email' => 'john.doe@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => 'password123',
     ]);
 
@@ -37,12 +37,12 @@ class AuthTest extends TestCase
   public function test_user_can_log_out_and_token_is_deleted()
   {
     $user = User::factory()->create([
-      'email' => 'john.doe@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => bcrypt('password123'),
     ]);
 
     $loginResponse = $this->postJson('/api/login', [
-      'email' => 'john.doe@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => 'password123',
     ]);
 
@@ -66,7 +66,7 @@ class AuthTest extends TestCase
 
     $response = $this->postJson('/api/register', [
       'name' => 'John Doe',
-      'email' => 'john@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => 'password',
       'password_confirmation' => 'password',
     ]);

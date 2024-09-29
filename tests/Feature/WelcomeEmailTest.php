@@ -18,7 +18,7 @@ class WelcomeEmailTest extends TestCase
     // Register a new user
     $response = $this->postJson('/api/register', [
       'name' => 'Jane Doe',
-      'email' => 'jane@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => 'password',
       'password_confirmation' => 'password',
     ]);

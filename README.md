@@ -111,7 +111,7 @@ Security
         -   Captcha
         -   Exponentially increasing timeouts
     -   Admin override to reset the current protection status
--   Rate limiting on APIs
+-   Rate limiting on APIs/Debouncing
 
 Performance
 

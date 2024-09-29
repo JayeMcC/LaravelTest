@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
 
     $testAdmin = User::factory()->admin()->create([
       'name' => 'Test Admin',
-      'email' => 'admin@example.com',
+      'email' => 'jaye.r.mcc+laravelTestAdmin@gmail.com',
       'password' => bcrypt('password123'),
     ]);
 
     $testUser = User::factory()->create([
       'name' => 'Test User',
-      'email' => 'user@example.com',
+      'email' => 'jaye.r.mcc+laravelTestUser@gmail.com',
       'password' => bcrypt('password123'),
     ]);
 
