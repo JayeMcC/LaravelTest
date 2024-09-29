@@ -29,6 +29,41 @@ class CommentTest extends TestCase
     $response->assertJsonCount(5, 'data');
   }
 
+  public function test_can_list_paginated_comments_for_post()
+  {
+    $user = User::factory()->create();
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $post = Post::factory()->create(['user_id' => $user->id]);
+
+    Comment::factory(15)->create(['post_id' => $post->id, 'user_id' => $user->id]);
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson("/api/posts/{$post->id}/comments?page=1");
+
+    $response->assertStatus(200);
+
+    $response->assertJsonCount(10, 'data'); // Paginated comments are inside 'data'
+
+    $response->assertJsonStructure([
+      'data',
+      'links' => [
+        'first',
+        'last',
+        'prev',
+        'next'
+      ],
+      'meta' => [
+        'current_page',
+        'last_page',
+        'from',
+        'to',
+        'total',
+        'per_page'
+      ]
+    ]);
+  }
+
   public function test_can_get_specific_comment()
   {
     $user = User::factory()->create();

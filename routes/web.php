@@ -12,6 +12,7 @@ use App\Http\Controllers\Web\WelcomeController;
 
 Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 
+// Swagger-related routes
 Route::get('/swagger/openapi.yml', function () {
   $path = resource_path('swagger/openapi.yml');
   return Response::file($path, [
@@ -29,6 +30,7 @@ Route::get('/swagger/{filename}', function ($filename) {
   ]);
 })->where('filename', '.*');
 
+// Auth-related routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -37,21 +39,23 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::middleware('auth')->group(function () {
+  // Post-related routes
   Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-  Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
   Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+  Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
   Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
   Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
   Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
   Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
+  // Comment-related routes
   Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
   Route::get('/posts/{post}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
   Route::patch('/posts/{post}/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
   Route::delete('/posts/{post}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+  // User-related routes
   Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
   Route::get('/users/{user}/posts', [UserController::class, 'userPosts'])->name('users.posts');
+  Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
-
-Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');

@@ -24,27 +24,6 @@ class PostController extends Controller
   }
 
   /**
-   * Show a specific post.
-   *
-   * @param  Post  $post
-   * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
-   */
-  public function show(Post $post)
-  {
-    return view('posts.show', compact('post'));
-  }
-
-  /**
-   * Show the form for creating a new post.
-   *
-   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-   */
-  public function create()
-  {
-    return view('posts.create');
-  }
-
-  /**
    * Store a new post and redirect to the created post.
    *
    * @param  PostRequest  $request
@@ -60,6 +39,27 @@ class PostController extends Controller
 
     return redirect()->route('posts.show', $post->id)
       ->with('success', 'Post created successfully!');
+  }
+
+  /**
+   * Show the form for creating a new post.
+   *
+   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+   */
+  public function create()
+  {
+    return view('posts.create');
+  }
+
+  /**
+   * Show a specific post.
+   *
+   * @param  Post  $post
+   * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+   */
+  public function show(Post $post)
+  {
+    return view('posts.show', compact('post'));
   }
 
   /**

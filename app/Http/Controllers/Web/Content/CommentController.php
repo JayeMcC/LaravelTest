@@ -11,32 +11,6 @@ use Illuminate\Http\RedirectResponse;
 class CommentController extends Controller
 {
   /**
-   * List all comments for a specific post.
-   *
-   * @param  Post  $post
-   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-   */
-  public function index(Post $post)
-  {
-    $comments = $post->comments()->paginate(10);
-    return view('comments.index', compact('post', 'comments'));
-  }
-
-  /**
-   * Show the form to edit an existing comment.
-   *
-   * @param  Post  $post
-   * @param  Comment  $comment
-   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-   */
-  public function edit(Post $post, Comment $comment)
-  {
-    $this->authorize('update', $comment);
-
-    return view('comments.edit', compact('post', 'comment'));
-  }
-
-  /**
    * Store a new comment for a post and refresh the post page.
    *
    * @param  CommentRequest  $request
@@ -54,6 +28,20 @@ class CommentController extends Controller
     // Redirect back to the post page
     return redirect()->route('posts.show', $post->id)
       ->with('success', 'Comment added successfully.');
+  }
+
+  /**
+   * Show the form to edit an existing comment.
+   *
+   * @param  Post  $post
+   * @param  Comment  $comment
+   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+   */
+  public function edit(Post $post, Comment $comment)
+  {
+    $this->authorize('update', $comment);
+
+    return view('comments.edit', compact('post', 'comment'));
   }
 
   /**
