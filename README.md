@@ -138,7 +138,8 @@ Testing
 
 Prod deployment
 
--   Wouldn't spin up a DB instance/seed the DB
+-   Would point to a prod instance instead of spinning up a DB instance/seeding the DB
+-   Would implement secure secrets management (probably via pipeline vars or AWS secrets)
 
 Things out of scope that I did anyway:
 
