@@ -19,6 +19,7 @@ class UserController extends Controller
    */
   public function show(User $user): JsonResponse
   {
+    $this->authorize('view', $user);
     return response()->json($user, 200);
   }
 
@@ -32,9 +33,7 @@ class UserController extends Controller
   public function index(): JsonResponse
   {
     $this->authorize('viewAny', User::class);
-
     $users = User::paginate(10);
-
     return response()->json($users, 200);
   }
 }

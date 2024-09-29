@@ -13,9 +13,6 @@ class PostTest extends TestCase
 {
   use RefreshDatabase;
 
-  /**
-   * Test listing all posts.
-   */
   public function test_list_all_posts()
   {
     Post::factory()->count(5)->create();
@@ -36,9 +33,6 @@ class PostTest extends TestCase
       ]);
   }
 
-  /**
-   * Test showing a specific post.
-   */
   public function test_show_specific_post()
   {
     $post = Post::factory()->create();
@@ -58,9 +52,6 @@ class PostTest extends TestCase
       ]);
   }
 
-  /**
-   * Test creating a new post.
-   */
   public function test_create_new_post()
   {
     $user = User::factory()->create();
@@ -119,7 +110,6 @@ class PostTest extends TestCase
       ]);
   }
 
-
   public function test_owner_can_update_post_content()
   {
     $user = User::factory()->create();
@@ -168,9 +158,6 @@ class PostTest extends TestCase
     $response->assertStatus(403); // Forbidden
   }
 
-  /**
-   * Test that an admin can update any post.
-   */
   public function test_admin_can_update_any_post()
   {
     $admin = User::factory()->create(['is_admin' => true]);
@@ -188,9 +175,6 @@ class PostTest extends TestCase
       ->assertJson(['title' => 'Updated by Admin']);
   }
 
-  /**
-   * Test that the owner can delete their post.
-   */
   public function test_owner_can_delete_post()
   {
     $user = User::factory()->create();
@@ -201,13 +185,10 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}");
 
-    $response->assertStatus(200); // No content
+    $response->assertStatus(204);
     $this->assertDatabaseMissing('posts', ['id' => $post->id]);
   }
 
-  /**
-   * Test that a non-owner cannot delete a post.
-   */
   public function test_non_owner_cannot_delete_post()
   {
     $user = User::factory()->create();
@@ -222,9 +203,6 @@ class PostTest extends TestCase
     $response->assertStatus(403);  // Forbidden
   }
 
-  /**
-   * Test that an admin can delete any post.
-   */
   public function test_admin_can_delete_any_post()
   {
     $admin = User::factory()->create(['is_admin' => true]);
@@ -236,7 +214,7 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}");
 
-    $response->assertStatus(200); // No content
+    $response->assertStatus(204);
     $this->assertDatabaseMissing('posts', ['id' => $post->id]);
   }
 }
