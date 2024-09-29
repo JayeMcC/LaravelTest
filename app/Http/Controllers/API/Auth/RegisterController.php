@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use App\Jobs\SendWelcomeEmail;
 
 class RegisterController extends Controller
 {
@@ -23,6 +24,8 @@ class RegisterController extends Controller
       'email' => $request->email,
       'password' => Hash::make($request->password),
     ]);
+
+    SendWelcomeEmail::dispatch($user);
 
     return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
   }

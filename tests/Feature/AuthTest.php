@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use App\Jobs\SendWelcomeEmail;
+use Illuminate\Support\Facades\Queue;
 
 class AuthTest extends TestCase
 {
@@ -56,5 +58,21 @@ class AuthTest extends TestCase
     $this->withHeader('Authorization', 'Bearer ' . $token);
     $protectedRouteResponse = $this->getJson('/api/posts');
     $protectedRouteResponse->assertStatus(401);
+  }
+
+  public function test_welcome_email_is_dispatched_on_registration()
+  {
+    Queue::fake();
+
+    $response = $this->postJson('/api/register', [
+      'name' => 'John Doe',
+      'email' => 'john@example.com',
+      'password' => 'password',
+      'password_confirmation' => 'password',
+    ]);
+
+    $response->assertStatus(201);
+
+    Queue::assertPushed(SendWelcomeEmail::class);
   }
 }

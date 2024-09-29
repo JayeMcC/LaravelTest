@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use App\Jobs\SendWelcomeEmail;
 
 class RegisterController extends Controller
 {
@@ -36,6 +37,8 @@ class RegisterController extends Controller
     ]);
 
     Auth::login($user);
+
+    SendWelcomeEmail::dispatch($user);
 
     return redirect()->route('home');
   }
