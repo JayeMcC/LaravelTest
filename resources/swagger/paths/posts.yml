@@ -3,24 +3,37 @@ paths:
     get:
       summary: Get all posts
       responses:
-        '200':
+        "200":
           description: A list of posts
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '../schemas/Post.yml'
+                  $ref: "../schemas/Post.yml"
     post:
       summary: Create a new post
+      parameters:
+        - name: title
+          in: path
+          required: false
+          schema:
+            type: string
+            example: "test text title"
+        - name: content
+          in: path
+          required: false
+          schema:
+            type: string
+            example: "test text content"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../schemas/Post.yml'
+              $ref: "../schemas/Post.yml"
       responses:
-        '201':
+        "201":
           description: Post created
   /posts/{id}:
     get:
@@ -31,14 +44,15 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       responses:
-        '200':
+        "200":
           description: A single post
           content:
             application/json:
               schema:
-                $ref: '../schemas/Post.yml'
-        '404':
+                $ref: "../schemas/Post.yml"
+        "404":
           description: Post not found
     patch:
       summary: Update a post
@@ -48,14 +62,27 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
+        - name: title
+          in: path
+          required: false
+          schema:
+            type: string
+            example: "change text title"
+        - name: content
+          in: path
+          required: false
+          schema:
+            type: string
+            example: "change text content"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../schemas/Post.yml'
+              $ref: "../schemas/Post.yml"
       responses:
-        '200':
+        "200":
           description: Post updated
     delete:
       summary: Delete a post
@@ -65,6 +92,9 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       responses:
-        '204':
+        "204":
           description: Post deleted
+        "400":
+          description: Title and content cannot both be empty

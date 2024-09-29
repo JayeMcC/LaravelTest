@@ -9,14 +9,14 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: A list of comments
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '../schemas/Comment.yml'
+                  $ref: "../schemas/Comment.yml"
 
     post:
       summary: Create a comment for a post
@@ -26,14 +26,20 @@ paths:
           required: true
           schema:
             type: integer
+        - name: content
+          in: path
+          required: false
+          schema:
+            type: string
+            example: "test text comment content"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../schemas/Comment.yml'
+              $ref: "../schemas/Comment.yml"
       responses:
-        '201':
+        "201":
           description: Comment created
 
   /posts/{post}/comments/{comment}:
@@ -51,12 +57,12 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: A comment
           content:
             application/json:
               schema:
-                $ref: '../schemas/Comment.yml'
+                $ref: "../schemas/Comment.yml"
     patch:
       summary: Update a specific comment
       parameters:
@@ -75,9 +81,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Comment.yml'
+              $ref: "../schemas/Comment.yml"
       responses:
-        '200':
+        "200":
           description: Comment updated
     delete:
       summary: Delete a specific comment
@@ -93,5 +99,5 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Comment deleted

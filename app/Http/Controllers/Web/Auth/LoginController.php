@@ -21,6 +21,12 @@ class LoginController extends Controller
     return response()->view('auth.login');
   }
 
+  /**
+   * Log in a user and redirect to the home page.
+   *
+   * @param  Request  $request
+   * @return RedirectResponse
+   */
   public function login(Request $request): RedirectResponse
   {
     $request->validate([

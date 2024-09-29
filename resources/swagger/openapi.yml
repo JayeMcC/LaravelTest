@@ -12,21 +12,21 @@ security:
 
 paths:
   /posts:
-    $ref: './paths/posts.yml#/paths/~1posts'
+    $ref: "./paths/posts.yml#/paths/~1posts"
   /posts/{id}:
-    $ref: './paths/posts.yml#/paths/~1posts~1{id}'
+    $ref: "./paths/posts.yml#/paths/~1posts~1{id}"
   /posts/{post}/comments:
-    $ref: './paths/comments.yml#/paths/~1posts~1{post}~1comments'
+    $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments"
   /posts/{post}/comments/{comment}:
-    $ref: './paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}'
+    $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}"
   /register:
-    $ref: './paths/auth.yml#/paths/~1register'
-  /login:
-    $ref: './paths/auth.yml#/paths/~1login'
-  /logout:
-    $ref: './paths/auth.yml#/paths/~1logout'
+    $ref: "./paths/auth.yml#/paths/~1register"
   /users/{id}:
-    $ref: './paths/users.yml#/paths/~1users~1{id}'
+    $ref: "./paths/users.yml#/paths/~1users~1{id}"
+  /login:
+    $ref: "./paths/auth.yml#/paths/~1login"
+  /logout:
+    $ref: "./paths/auth.yml#/paths/~1logout"
 
 components:
   securitySchemes:
@@ -36,8 +36,8 @@ components:
       bearerFormat: JWT
   schemas:
     Post:
-      $ref: './schemas/Post.yml'
+      $ref: "./schemas/Post.yml"
     Comment:
-      $ref: './schemas/Comment.yml'
+      $ref: "./schemas/Comment.yml"
     User:
-      $ref: './schemas/User.yml'
+      $ref: "./schemas/User.yml"
