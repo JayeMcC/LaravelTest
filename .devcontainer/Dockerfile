@@ -3,7 +3,6 @@ FROM my-dev-environment:latest
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
 
-# Set the working directory for your app
 WORKDIR /var/www/html
 
 # Install system dependencies, PHP extensions, and supervisor

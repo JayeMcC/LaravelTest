@@ -9,6 +9,7 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
@@ -32,34 +33,50 @@ class PostController extends Controller
      * Show a specific post by ID.
      *
      * @param  int  $id
-     * @return JsonResponse
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id)
     {
+        // Retrieve the post by its ID
         $post = Post::find($id);
 
+        // Check if the post exists
         if (!$post) {
-            return response()->json(['error' => 'Post not found.'], 404);
+            abort(404, 'Post not found');
         }
 
-        return response()->json($post, 200);
+        // Pass the post to the view
+        return view('posts.show', compact('post'));
     }
 
     /**
-     * Create a new post.
+     * Show the form for creating a new post.
+     *
+     * @return Response
+     */
+    public function create(): Response
+    {
+        return response()->view('posts.create');
+    }
+
+    /**
+     * Store a new post and redirect to the created post.
      *
      * @param  PostRequest  $request
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function store(PostRequest $request): JsonResponse
+    public function store(PostRequest $request): RedirectResponse
     {
+        // Create the post
         $post = Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'user_id' => $request->user()->id,
         ]);
 
-        return response()->json($post, 201); // 201 Created
+        // Redirect to the newly created post
+        return redirect()->route('posts.show', $post->id)
+            ->with('success', 'Post created successfully!');
     }
 
     /**
@@ -85,23 +102,26 @@ class PostController extends Controller
     }
 
     /**
-     * Delete a specific post by ID.
+     * Delete a specific post and redirect to the homepage.
      *
      * @param  int  $id
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): RedirectResponse
     {
         $post = Post::find($id);
 
         if (!$post) {
-            return response()->json(['error' => 'Post not found.'], 404);
+            return redirect()->route('home')->with('error', 'Post not found.');
         }
 
+        // Authorize the action
         $this->authorize('delete', $post);
 
+        // Delete the post
         $post->delete();
 
-        return response()->json(null, 204); // 204 No Content
+        // Redirect back to the user's homepage with a success message
+        return redirect()->route('home')->with('success', 'Post deleted successfully.');
     }
 }

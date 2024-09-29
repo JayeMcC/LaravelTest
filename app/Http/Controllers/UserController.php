@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -26,6 +27,24 @@ class UserController extends Controller
     $this->authorize('view', $user);
 
     return response()->json($user, 200);
+  }
+
+  /**
+   * Display a list of posts for a specific user by ID.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+   */
+  public function userPosts(int $id)
+  {
+    // Get the user by ID
+    $user = User::findOrFail($id);
+
+    // Retrieve the posts for the specific user
+    $posts = $user->posts()->paginate(10);
+
+    // Return the view with the user's posts
+    return view('users.posts', compact('user', 'posts'));
   }
 
   /**

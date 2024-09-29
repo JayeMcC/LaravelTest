@@ -14,6 +14,26 @@ use Illuminate\Http\JsonResponse;
 class AuthController extends Controller
 {
     /**
+     * Show the registration form.
+     *
+     * @return Response
+     */
+    public function showRegistrationForm(): Response
+    {
+        return response()->view('auth.register');
+    }
+
+    /**
+     * Show the login form.
+     *
+     * @return Response
+     */
+    public function showLoginForm(): Response
+    {
+        return response()->view('auth.login');
+    }
+
+    /**
      * Register a new user.
      *
      * @param  RegisterRequest  $request

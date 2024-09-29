@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
 
 class CommentController extends Controller
 {
@@ -40,20 +41,23 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a new comment for a post.
+     * Store a new comment for a post and refresh the post page.
      *
      * @param  CommentRequest  $request
      * @param  Post  $post
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function store(CommentRequest $request, Post $post): JsonResponse
+    public function store(CommentRequest $request, Post $post): RedirectResponse
     {
-        $comment = $post->comments()->create([
+        // Create the new comment
+        $post->comments()->create([
             'content' => $request->content,
             'user_id' => $request->user()->id,
         ]);
 
-        return response()->json($comment, 201);
+        // Redirect back to the post page
+        return redirect()->route('posts.show', $post->id)
+            ->with('success', 'Comment added successfully.');
     }
 
     /**
@@ -74,18 +78,21 @@ class CommentController extends Controller
     }
 
     /**
-     * Delete a specific comment for a post.
+     * Delete a specific comment for a post and redirect back to the post page.
      *
      * @param  Post  $post
      * @param  Comment  $comment
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function destroy(Post $post, Comment $comment): JsonResponse
+    public function destroy(Post $post, Comment $comment): RedirectResponse
     {
         $this->authorize('delete', $comment);
 
+        // Delete the comment
         $comment->delete();
 
-        return response()->json(null, 204);
+        // Redirect back to the post page with a success message
+        return redirect()->route('posts.show', $post->id)
+            ->with('success', 'Comment deleted successfully.');
     }
 }
