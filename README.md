@@ -79,6 +79,20 @@ Run by:
 php artisan email:send-welcome {user_id}
 ```
 
+Check completed jobs by logging into the mysql container
+
+```
+docker exec -it mysql mysql -u user -p
+pass: pass
+```
+
+And reviewing the job histories table
+
+```
+USE test_db;
+SELECT * FROM job_histories;
+```
+
 6. Validation
    Request validation for all endpoints
    HTTP status codes and error messages
@@ -159,3 +173,26 @@ Build the react assets
 ```
 npm run dev
 ```
+
+Things I would have liked to have done, but I'd need to sleep on it
+
+API sad path handling: http://localhost:8000/swagger-ui/index.html#/
+
+-   Exception handler was redirecting
+-   Logging out while unauthenticated throws a redirect to welcome page
+-   Attempting to hit an auth required page while unauthed throws a redirect to the login page
+-   Hitting the post update while unauthed redirects to /
+
+Linting:
+
+-   Fill in phpdoc
+
+Web:
+
+-   Add pagination to web
+
+Swagger:
+
+-   Caching issue, seems to hold onto old files even when told not to by laravel routes
+-   Temp fix is to always open in incognito
+-   Figure out answer later

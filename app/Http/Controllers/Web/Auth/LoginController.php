@@ -59,6 +59,10 @@ class LoginController extends Controller
    */
   public function logout(Request $request): RedirectResponse
   {
+    if ($request->user()) {
+      $request->user()->tokens()->delete();
+    }
+
     Auth::logout();
 
     $request->session()->invalidate();
