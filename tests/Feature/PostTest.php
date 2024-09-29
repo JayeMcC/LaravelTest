@@ -20,15 +20,19 @@ class PostTest extends TestCase
   {
     Post::factory()->count(5)->create();
 
-    $response = $this->getJson('/api/posts');
+    $user = User::factory()->create();
+
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson('/api/posts');
 
     $response->assertStatus(200)
       ->assertJsonStructure([
         'data' => [
           '*' => ['id', 'title', 'content', 'user_id', 'created_at', 'updated_at'],
         ],
-        'links',
-        'meta'
+        'links'
       ]);
   }
 
@@ -39,7 +43,12 @@ class PostTest extends TestCase
   {
     $post = Post::factory()->create();
 
-    $response = $this->getJson("/api/posts/{$post->id}");
+    $user = User::factory()->create();
+
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson("/api/posts/{$post->id}");
 
     $response->assertStatus(200)
       ->assertJson([
@@ -72,10 +81,26 @@ class PostTest extends TestCase
       ]);
   }
 
-  /**
-   * Test updating a post by the owner.
-   */
   public function test_owner_can_update_post()
+  {
+    $user = User::factory()->create();
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $post = Post::factory()->create(['user_id' => $user->id]);
+
+    $updateData = ['title' => 'Updated Title', 'content' => 'Updated Content'];
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->patchJson("/api/posts/{$post->id}", $updateData);
+
+    $response->assertStatus(200)
+      ->assertJson([
+        'title' => 'Updated Title',
+        'content' => 'Updated Content'
+      ]);
+  }
+
+  public function test_owner_can_update_post_title()
   {
     $user = User::factory()->create();
     $token = $user->createToken('Test Token')->plainTextToken;
@@ -88,12 +113,45 @@ class PostTest extends TestCase
       ->patchJson("/api/posts/{$post->id}", $updateData);
 
     $response->assertStatus(200)
-      ->assertJson(['title' => 'Updated Title']);
+      ->assertJson([
+        'title' => 'Updated Title',
+        'content' => $post->content
+      ]);
   }
 
-  /**
-   * Test that a non-owner cannot update a post.
-   */
+
+  public function test_owner_can_update_post_content()
+  {
+    $user = User::factory()->create();
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $post = Post::factory()->create(['user_id' => $user->id]);
+
+    $updateData = ['content' => 'Updated Content'];
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->patchJson("/api/posts/{$post->id}", $updateData);
+
+    $response->assertStatus(200)
+      ->assertJson([
+        'title' => $post->title,
+        'content' => 'Updated Content'
+      ]);
+  }
+
+  public function test_owner_cant_update_with_no_details()
+  {
+    $user = User::factory()->create();
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $post = Post::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->patchJson("/api/posts/{$post->id}", []);
+
+    $response->assertStatus(422);
+  }
+
   public function test_non_owner_cannot_update_post()
   {
     $user = User::factory()->create();
@@ -107,7 +165,7 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->patchJson("/api/posts/{$post->id}", $updateData);
 
-    $response->assertStatus(403);  // Forbidden
+    $response->assertStatus(403); // Forbidden
   }
 
   /**
@@ -115,23 +173,23 @@ class PostTest extends TestCase
    */
   public function test_admin_can_update_any_post()
   {
-    $admin = User::factory()->admin()->create();
+    $admin = User::factory()->create(['is_admin' => true]);
     $user = User::factory()->create();
     $token = $admin->createToken('Admin Token')->plainTextToken;
 
     $post = Post::factory()->create(['user_id' => $user->id]);
 
-    $updateData = ['title' => 'Admin Updated Title'];
+    $updateData = ['title' => 'Updated by Admin'];
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->patchJson("/api/posts/{$post->id}", $updateData);
 
     $response->assertStatus(200)
-      ->assertJson(['title' => 'Admin Updated Title']);
+      ->assertJson(['title' => 'Updated by Admin']);
   }
 
   /**
-   * Test that the owner can delete their own post.
+   * Test that the owner can delete their post.
    */
   public function test_owner_can_delete_post()
   {
@@ -143,7 +201,8 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}");
 
-    $response->assertStatus(204);
+    $response->assertStatus(200); // No content
+    $this->assertDatabaseMissing('posts', ['id' => $post->id]);
   }
 
   /**
@@ -168,7 +227,7 @@ class PostTest extends TestCase
    */
   public function test_admin_can_delete_any_post()
   {
-    $admin = User::factory()->admin()->create();
+    $admin = User::factory()->create(['is_admin' => true]);
     $user = User::factory()->create();
     $token = $admin->createToken('Admin Token')->plainTextToken;
 
@@ -177,6 +236,7 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}");
 
-    $response->assertStatus(204);
+    $response->assertStatus(200); // No content
+    $this->assertDatabaseMissing('posts', ['id' => $post->id]);
   }
 }

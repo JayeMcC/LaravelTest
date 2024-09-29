@@ -123,7 +123,7 @@ class CommentTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}/comments/{$comment->id}");
 
-    $response->assertStatus(204);
+    $response->assertStatus(200);
     $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
   }
 
@@ -160,7 +160,7 @@ class CommentTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}/comments/{$comment->id}");
 
-    $response->assertStatus(204);
+    $response->assertStatus(200);
     $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
   }
 }

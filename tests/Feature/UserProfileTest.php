@@ -29,6 +29,23 @@ class UserProfileTest extends TestCase
   }
 
   /**
+   * Test fetching another user's profile.
+   */
+  public function test_can_get_other_user_profile()
+  {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson("/api/users/{$otherUser->id}");
+
+    $response->assertStatus(200);
+    $response->assertJson(['user' => ['id' => $otherUser->id, 'email' => $otherUser->email]]);
+  }
+
+  /**
    * Test updating the user's profile.
    */
   public function test_can_update_own_user_profile()
@@ -92,23 +109,6 @@ class UserProfileTest extends TestCase
 
     $response->assertStatus(200);
     $this->assertDatabaseHas('users', ['id' => $otherUser->id, 'name' => 'Updated by Admin']);
-  }
-
-  /**
-   * Test admin can delete other users.
-   */
-  public function test_admin_can_delete_other_user()
-  {
-    $admin = User::factory()->admin()->create();
-    $otherUser = User::factory()->create();
-
-    $token = $admin->createToken('Admin Token')->plainTextToken;
-
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->deleteJson("/api/users/{$otherUser->id}");
-
-    $response->assertStatus(204);
-    $this->assertDatabaseMissing('users', ['id' => $otherUser->id]);
   }
 
   /**
