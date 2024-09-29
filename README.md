@@ -5,6 +5,8 @@ I use an ubuntu dockerised dev environment to keep the experience consistent acr
 -   On Windows this will require enabling WSL
 
 This will set up and run the queue worker, the DB, and the site itself.
+This readme will be hosted at: http://localhost:8000/
+
 To manually dispatch the welcome email job run the following command:
 
 ```
