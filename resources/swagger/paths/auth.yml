@@ -7,7 +7,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "../schemas/User.yml"
+              $ref: "../schemas/UserRegistration.yml"
       responses:
         "201":
           description: User registered successfully
@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "../schemas/User.yml"
+              $ref: "../schemas/LoginRequest.yml"
       responses:
         "200":
           description: User logged in successfully

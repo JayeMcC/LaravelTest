@@ -1,0 +1,33 @@
+type: object
+properties:
+  current_page:
+    type: integer
+    example: 1
+  data:
+    type: array
+    items:
+      $ref: "./User.yml"
+  total:
+    type: integer
+    example: 50
+  per_page:
+    type: integer
+    example: 10
+  last_page:
+    type: integer
+    example: 5
+  first_page_url:
+    type: string
+    example: "http://localhost/api/users?page=1"
+  last_page_url:
+    type: string
+    example: "http://localhost/api/users?page=5"
+  next_page_url:
+    type: string
+    example: "http://localhost/api/users?page=2"
+  prev_page_url:
+    type: string
+    example: null
+  path:
+    type: string
+    example: "http://localhost/api/users"

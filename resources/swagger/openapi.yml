@@ -13,20 +13,56 @@ security:
 paths:
   /posts:
     $ref: "./paths/posts.yml#/paths/~1posts"
-  /posts/{id}:
-    $ref: "./paths/posts.yml#/paths/~1posts~1{id}"
+  /posts/{post}:
+    $ref: "./paths/posts.yml#/paths/~1posts~1{post}"
   /posts/{post}/comments:
     $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments"
   /posts/{post}/comments/{comment}:
     $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}"
   /register:
     $ref: "./paths/auth.yml#/paths/~1register"
-  /users/{id}:
-    $ref: "./paths/users.yml#/paths/~1users~1{id}"
   /login:
     $ref: "./paths/auth.yml#/paths/~1login"
   /logout:
     $ref: "./paths/auth.yml#/paths/~1logout"
+  /users: # Sadly leaving these inline here as I'm can't seem to see the cause of a ref issue
+    get:
+      summary: Get a paginated list of all users
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: A paginated list of users
+          content:
+            application/json:
+              schema:
+                $ref: "./schemas/PaginatedUsers.yml"
+        "403":
+          description: Forbidden - not authorized
+
+  /users/{user}:
+    get:
+      summary: Get a user by ID
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: A user object
+          content:
+            application/json:
+              schema:
+                $ref: "./schemas/User.yml"
+        "404":
+          description: User not found
 
 components:
   securitySchemes:
@@ -35,9 +71,19 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    Post:
-      $ref: "./schemas/Post.yml"
     Comment:
       $ref: "./schemas/Comment.yml"
+    LoginRequest:
+      $ref: "./schemas/LoginRequest.yml"
+    PaginatedComments:
+      $ref: "./schemas/PaginatedComments.yml"
+    PaginatedPosts:
+      $ref: "./schemas/PaginatedPosts.yml"
+    PaginatedUsers:
+      $ref: "./schemas/PaginatedUsers.yml"
+    Post:
+      $ref: "./schemas/Post.yml"
     User:
       $ref: "./schemas/User.yml"
+    UserRegistration:
+      $ref: "./schemas/UserRegistration.yml"
