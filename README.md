@@ -14,10 +14,10 @@ php artisan email:send-welcome {user_id}
 The DB is automatically seeded, so feel free to log in with the following details, or register to gain your own:
 
 ```
-email: admin@example.com
+email: jaye.r.mcc+laravelTestAdmin@gmail.com
 password: password123
 
-email: user@example.com
+email: jaye.r.mcc+laravelTestUser@gmail.com
 password: password123
 ```
 
