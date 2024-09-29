@@ -72,7 +72,6 @@ class UserTest extends TestCase
     $response->assertJsonCount(6, 'data');
   }
 
-
   public function test_non_admin_cant_access_user_list()
   {
     $user = User::factory()->create();
@@ -87,9 +86,6 @@ class UserTest extends TestCase
     $response->assertStatus(403);
   }
 
-  /**
-   * Test that the isAdmin method works properly.
-   */
   public function test_is_admin_method()
   {
     $admin = User::factory()->admin()->create();

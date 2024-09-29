@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 
@@ -24,8 +23,6 @@ class RegisterController extends Controller
       'email' => $request->email,
       'password' => Hash::make($request->password),
     ]);
-
-    Auth::login($user);
 
     return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
   }

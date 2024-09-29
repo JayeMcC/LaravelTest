@@ -19,50 +19,16 @@ paths:
     $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments"
   /posts/{post}/comments/{comment}:
     $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}"
+  /users:
+    $ref: "./paths/users.yml#/paths/~1users"
+  /users/{user}:
+    $ref: "./paths/users.yml#/paths/~1users~1{user}"
   /register:
     $ref: "./paths/auth.yml#/paths/~1register"
   /login:
     $ref: "./paths/auth.yml#/paths/~1login"
   /logout:
     $ref: "./paths/auth.yml#/paths/~1logout"
-  /users: # Sadly leaving these inline here as I'm can't seem to see the cause of a ref issue
-    get:
-      summary: Get a paginated list of all users
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            example: 1
-      responses:
-        "200":
-          description: A paginated list of users
-          content:
-            application/json:
-              schema:
-                $ref: "./schemas/PaginatedUsers.yml"
-        "403":
-          description: Forbidden - not authorized
-
-  /users/{user}:
-    get:
-      summary: Get a user by ID
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
-      responses:
-        "200":
-          description: A user object
-          content:
-            application/json:
-              schema:
-                $ref: "./schemas/User.yml"
-        "404":
-          description: User not found
 
 components:
   securitySchemes:

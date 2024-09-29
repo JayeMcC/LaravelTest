@@ -17,6 +17,9 @@ Route::get('/swagger/openapi.yml', function () {
   $path = resource_path('swagger/openapi.yml');
   return Response::file($path, [
     'Content-Type' => 'application/x-yaml',
+    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+    'Pragma' => 'no-cache',
+    'Expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
   ]);
 });
 
@@ -27,6 +30,9 @@ Route::get('/swagger/{filename}', function ($filename) {
   }
   return Response::file($path, [
     'Content-Type' => 'application/x-yaml',
+    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+    'Pragma' => 'no-cache',
+    'Expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
   ]);
 })->where('filename', '.*');
 

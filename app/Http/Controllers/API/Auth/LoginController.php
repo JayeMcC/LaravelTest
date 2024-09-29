@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -12,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 class LoginController extends Controller
 {
   /**
-   * Log in a user and return a success message with the user data.
+   * Log in a user and return the user data along with the Bearer token.
    *
    * @param  Request  $request
    * @return JsonResponse
@@ -30,9 +29,13 @@ class LoginController extends Controller
       return response()->json(['error' => 'Invalid credentials'], 401);
     }
 
-    Auth::login($user);
+    $token = $user->createToken('API Token')->plainTextToken;
 
-    return response()->json(['message' => 'Logged in successfully', 'user' => $user], 200);
+    return response()->json([
+      'message' => 'Logged in successfully',
+      'user' => $user,
+      'token' => $token
+    ], 200);
   }
 
   /**
@@ -43,7 +46,6 @@ class LoginController extends Controller
    */
   public function logout(Request $request): JsonResponse
   {
-    // Revoke the token that was used to authenticate the current request
     $request->user()->currentAccessToken()->delete();
 
     return response()->json(['message' => 'Logged out successfully'], 200);

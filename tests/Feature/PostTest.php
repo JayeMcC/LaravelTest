@@ -175,7 +175,7 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->patchJson("/api/posts/{$post->id}", $updateData);
 
-    $response->assertStatus(403); // Forbidden
+    $response->assertStatus(403);
   }
 
   public function test_admin_can_update_any_post()
@@ -220,7 +220,7 @@ class PostTest extends TestCase
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
       ->deleteJson("/api/posts/{$post->id}");
 
-    $response->assertStatus(403);  // Forbidden
+    $response->assertStatus(403);
   }
 
   public function test_admin_can_delete_any_post()

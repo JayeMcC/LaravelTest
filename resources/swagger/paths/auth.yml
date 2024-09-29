@@ -2,6 +2,7 @@ paths:
   /register:
     post:
       summary: Register a new user
+      security: []
       requestBody:
         required: true
         content:
@@ -21,20 +22,28 @@ paths:
                     example: "Registration successful"
                   user:
                     $ref: "../schemas/User.yml"
-        "400":
+        "422":
           description: Invalid input data
-        "409":
-          description: Email already exists
 
   /login:
     post:
       summary: Login a user
+      security: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "../schemas/LoginRequest.yml"
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "john.doe@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
       responses:
         "200":
           description: User logged in successfully
