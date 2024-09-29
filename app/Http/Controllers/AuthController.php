@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -59,9 +60,9 @@ class AuthController extends Controller
      * Log in a user and issue a token.
      *
      * @param  Request  $request
-     * @return JsonResponse
+     * @return JsonResponse|RedirectResponse
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -74,22 +75,29 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        Auth::login($user);
 
-        return response()->json(['token' => $token], 200);
+        return redirect()->route('home');
     }
 
     /**
      * Log out the authenticated user and revoke their token.
      *
      * @param  Request  $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout(Request $request): Response
+    public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        if ($request->user()) {
+            $request->user()->tokens()->delete();
+        }
 
-        return response()->noContent();
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
     /**
