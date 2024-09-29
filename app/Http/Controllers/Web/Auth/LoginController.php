@@ -21,12 +21,6 @@ class LoginController extends Controller
     return response()->view('auth.login');
   }
 
-  /**
-   * Log in a user and redirect to the home page.
-   *
-   * @param  Request  $request
-   * @return RedirectResponse
-   */
   public function login(Request $request): RedirectResponse
   {
     $request->validate([
@@ -41,6 +35,12 @@ class LoginController extends Controller
     }
 
     Auth::login($user);
+
+    # Generate Sanctum Token for easy swagger access
+    $token = $user->createToken('web_token')->plainTextToken;
+
+    # Store the token in session to make it available for the client-side JavaScript
+    session(['token' => $token]);
 
     return redirect()->route('home');
   }

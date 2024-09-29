@@ -79,7 +79,7 @@
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                               document.getElementById('logout-form').submit();">
                   {{ __('Logout') }}
                 </a>
 
@@ -99,10 +99,20 @@
     </main>
   </div>
 
-  <!-- Copy Bearer Token Script -->
+  <!-- JavaScript Section -->
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get token from server-side session if it exists
+      const token = "{{ session('token') }}";
+
+      if (token) {
+        localStorage.setItem('token', token);
+        console.log('Token stored in localStorage');
+      }
+    });
+
+    // Function to copy the bearer token from localStorage
     function copyBearerToken() {
-      // Assuming the Bearer token is stored in localStorage with key 'token'
       const token = localStorage.getItem('token');
 
       if (!token) {
@@ -110,7 +120,7 @@
         return;
       }
 
-      // Create a temporary text area element to copy the token
+      // Copy the token to the clipboard
       const tempInput = document.createElement('textarea');
       tempInput.value = 'Bearer ' + token;
       document.body.appendChild(tempInput);
@@ -120,6 +130,11 @@
 
       alert('Bearer token copied to clipboard');
     }
+
+    // Clear the token from localStorage on logout
+    document.getElementById('logout-form').addEventListener('submit', function() {
+      localStorage.removeItem('token');
+    });
   </script>
 </body>
 
