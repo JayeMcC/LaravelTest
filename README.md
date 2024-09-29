@@ -14,8 +14,17 @@ php artisan email:send-welcome {user_id}
 The DB is automatically seeded, so feel free to log in with the following details, or register to gain your own:
 
 ```
-user: bingo@bongo.com.au
-pass: pass
+email: admin@example.com
+password: password123
+
+email: user@example.com
+password: password123
+```
+
+If you need to force a re-seed due to endpoints deleting content run:
+
+```
+php artisan migrate:fresh --seed
 ```
 
 In PHP files I've marked any meta code assessment specific comments with a "#"
