@@ -53,6 +53,26 @@ class UserTest extends TestCase
     $response->assertJsonStructure(['data' => ['*' => ['id', 'email', 'name']]]);
   }
 
+  public function test_admin_can_access_paginated_user_list()
+  {
+    $admin = User::factory()->admin()->create();
+    User::factory(15)->create();
+    $token = $admin->createToken('Test Token')->plainTextToken;
+
+    // Test page 1
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson('/api/users?page=1');
+    $response->assertStatus(200);
+    $response->assertJsonCount(10, 'data');
+
+    // Test page 2
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson('/api/users?page=2');
+    $response->assertStatus(200);
+    $response->assertJsonCount(6, 'data');
+  }
+
+
   public function test_non_admin_cant_access_user_list()
   {
     $user = User::factory()->create();

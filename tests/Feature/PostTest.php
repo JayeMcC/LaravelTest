@@ -33,6 +33,26 @@ class PostTest extends TestCase
       ]);
   }
 
+  public function test_can_list_paginated_posts()
+  {
+    Post::factory(15)->create();
+
+    $user = User::factory()->create();
+    $token = $user->createToken('Test Token')->plainTextToken;
+
+    // Test page 1
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson('/api/posts?page=1');
+    $response->assertStatus(200);
+    $response->assertJsonCount(10, 'data');
+
+    // Test page 2
+    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+      ->getJson('/api/posts?page=2');
+    $response->assertStatus(200);
+    $response->assertJsonCount(5, 'data');
+  }
+
   public function test_show_specific_post()
   {
     $post = Post::factory()->create();
