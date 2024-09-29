@@ -102,8 +102,6 @@ SELECT * FROM job_histories;
 7. Testing
    PHPUnit tests for at least two of the implemented endpoints
 
--   I ended up doing this for all of them as that's how I like to code
-
 8. Documentation
    I've opted to use swagger via external definitions rendered here: http://localhost:8000/swagger-ui/index.html#/
    There's a button in the nav to grab a valid bearer token that makes authenticating the swagger ui easy.

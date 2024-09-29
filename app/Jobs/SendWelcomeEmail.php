@@ -16,7 +16,7 @@ use App\Models\JobHistory;
 
 class SendWelcomeEmail implements ShouldQueue
 {
-  use Dispatchable, Queueable, InteractsWithQueue, SerializesModels; // Add Dispatchable trait
+  use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
   protected $user;
 

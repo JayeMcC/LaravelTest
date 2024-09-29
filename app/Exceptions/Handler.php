@@ -17,7 +17,6 @@ class Handler extends ExceptionHandler
    * @var array<int, class-string<Throwable>>
    */
   protected $dontReport = [
-    // Add exceptions that should not be reported here.
   ];
 
   /**
@@ -48,7 +47,6 @@ class Handler extends ExceptionHandler
       return $this->handleApiException($request, $exception);
     }
 
-    // For non-API requests, use the parent method for rendering the exception
     return parent::render($request, $exception);
   }
 

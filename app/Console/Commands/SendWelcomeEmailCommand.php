@@ -37,7 +37,6 @@ class SendWelcomeEmailCommand extends Command
       return 1;
     }
 
-    // Dispatch the job to send the welcome email
     SendWelcomeEmail::dispatch($user);
 
     $this->info("Welcome email sent to user: {$user->email}");

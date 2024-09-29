@@ -99,7 +99,7 @@
     </main>
   </div>
 
-  <!-- JavaScript Section -->
+  <!-- JavaScript Section, this is so quick and dirty -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Get token from server-side session if it exists

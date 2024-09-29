@@ -19,13 +19,11 @@ class CommentController extends Controller
    */
   public function store(CommentRequest $request, Post $post): RedirectResponse
   {
-    // Create the new comment
     $post->comments()->create([
       'content' => $request->content,
       'user_id' => $request->user()->id,
     ]);
 
-    // Redirect back to the post page
     return redirect()->route('posts.show', $post->id)
       ->with('success', 'Comment added successfully.');
   }
@@ -71,10 +69,8 @@ class CommentController extends Controller
   {
     $this->authorize('delete', $comment);
 
-    // Delete the comment
     $comment->delete();
 
-    // Redirect back to the post page with a success message
     return redirect()->route('posts.show', $post->id)
       ->with('success', 'Comment deleted successfully.');
   }
