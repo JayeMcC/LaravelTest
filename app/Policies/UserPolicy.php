@@ -12,24 +12,23 @@ class UserPolicy
     /**
      * Determine whether the user can view any users.
      *
-     * @param  User  $authUser
+     * @param  User  $user
      * @return bool
      */
-    public function viewAny(User $authUser): bool
+    public function viewAny(User $user): bool
     {
-        return $authUser->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can view a specific user.
      *
-     * @param  User  $authUser
      * @param  User  $user
      * @return bool
      */
-    public function view(User $authUser, User $user): bool
+    public function view(User $user): bool
     {
-        return $authUser->id === $user->id || $authUser->isAdmin();
+        return true;
     }
 
     /**

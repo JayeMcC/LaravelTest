@@ -2,13 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\Content\CommentController;
+use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Content\HomeController;
+use App\Http\Controllers\Web\Content\PostController;
+use App\Http\Controllers\Web\Content\UserController;
+use App\Http\Controllers\Web\WelcomeController;
 
-Route::get('/', [HomeController::class, 'welcome'])->name('home');
+Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 
 Route::get('/swagger/openapi.yml', function () {
     $path = resource_path('swagger/openapi.yml');
@@ -27,21 +29,25 @@ Route::get('/swagger/{filename}', function ($filename) {
     ]);
 })->where('filename', '.*');
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/posts/{post}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::patch('/posts/{post}/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/posts/{post}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');

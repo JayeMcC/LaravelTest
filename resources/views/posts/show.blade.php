@@ -7,9 +7,11 @@
 
   <p><strong>Posted by:</strong> {{ $post->user->name }}</p>
 
-  <!-- Delete post option -->
+  <!-- Edit and Delete post options -->
   @if (auth()->check() && auth()->user()->id === $post->user_id)
-  <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+  <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit Post</a>
+
+  <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger">Delete Post</button>
@@ -23,9 +25,11 @@
     <p>{{ $comment->content }}</p>
     <p><strong>Commented by:</strong> {{ $comment->user->name }}</p>
 
-    <!-- Delete comment option -->
+    <!-- Edit and Delete comment options -->
     @if (auth()->check() && auth()->user()->id === $comment->user_id)
-    <form action="{{ route('comments.destroy', [$post->id, $comment->id]) }}" method="POST">
+    <a href="{{ route('comments.edit', [$post->id, $comment->id]) }}" class="btn btn-primary">Edit Comment</a>
+
+    <form action="{{ route('comments.destroy', [$post->id, $comment->id]) }}" method="POST" style="display:inline;">
       @csrf
       @method('DELETE')
       <button type="submit" class="btn btn-danger">Delete Comment</button>

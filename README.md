@@ -1,10 +1,10 @@
 I use an ubuntu dockerised dev environment to keep the experience consistent across machines.
-- To run, open docker desktop and vscode
-- In vscode, open the repo, hit F1, and select "Dev containers: Rebuild and Reopen in Container" to spin up a local dev environment
+- To run, open Docker Desktop and VSCode
+- In VSCode, open the repo, hit F1, and select "Dev containers: Rebuild and Reopen in Container" to spin up a local dev environment
 - On Windows this will require enabling WSL
 
 This will set up and run the queue worker, the DB, and the site itself.
-To manually dispatch the welcome email job run the following:
+To manually dispatch the welcome email job run the following command:
 ```
 php artisan email:send-welcome {user_id}
 ```
@@ -14,8 +14,6 @@ The DB is automatically seeded, so feel free to log in with the following detail
 user: bingo@bongo.com.au
 pass: pass
 ```
-
-Notes:
 
 In PHP files I've marked any meta code assessment specific comments with a "#"
 - If you search for "# " and filter for only .php files you will find my reasoning behind including features
@@ -74,7 +72,7 @@ PHPUnit tests for at least two of the implemented endpoints
 8) Documentation
 I've opted to use swagger via external definitions rendered here: http://localhost:8000/swagger-ui/index.html#/
 
-Things considered out of scope of the requirements, but potentially in the scope of the evaluation criteria:
+Things I've considered out of scope of the requirements, but potentially in the scope of the evaluation criteria:
 Security
 - Email confirmation on account creation
 - Password requirements
@@ -84,7 +82,6 @@ Security
   - Password strength meter so the user can see if they've fallen into common pitfalls
     - Warning if password is in the top 100 most common passwords
     - Warning if password is too easy to brute force
-
 - MFA
 - Account recovery
 - Admin controls
@@ -108,8 +105,9 @@ Testing
 Things out of scope that I did anyway:
 
 Front end setup history:
-There was no mention of a front end, but I figured it would be nicer to test the features and flow as a user.
+There was no mention of a front end, but I figured it would be nice to test the features and flow as a user too.
 I opted for some react content as that's your current stack.
+I would have opted for an SPA, but that would have been more complex.
 
 ```
 php artisan ui react --auth

@@ -1,31 +1,26 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Http\Controllers\API\Content;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\RedirectResponse;
 
 class CommentController extends Controller
 {
-    use AuthorizesRequests;  // Include the trait to use the authorize method
-
     /**
      * List all comments for a specific post.
      *
      * @param  Post  $post
-     * @return LengthAwarePaginator
+     * @return JsonResponse
      */
-    public function index(Post $post): LengthAwarePaginator
+    public function index(Post $post): JsonResponse
     {
-        return $post->comments()->paginate(10);
+        $comments = $post->comments()->paginate(10);
+        return response()->json($comments, 200);
     }
 
     /**
@@ -41,27 +36,25 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a new comment for a post and refresh the post page.
+     * Store a new comment for a post and return the comment in JSON format.
      *
      * @param  CommentRequest  $request
      * @param  Post  $post
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function store(CommentRequest $request, Post $post): RedirectResponse
+    public function store(CommentRequest $request, Post $post): JsonResponse
     {
         // Create the new comment
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'content' => $request->content,
             'user_id' => $request->user()->id,
         ]);
 
-        // Redirect back to the post page
-        return redirect()->route('posts.show', $post->id)
-            ->with('success', 'Comment added successfully.');
+        return response()->json($comment, 201);
     }
 
     /**
-     * Update an existing comment for a post.
+     * Update an existing comment for a post and return it in JSON format.
      *
      * @param  CommentRequest  $request
      * @param  Post  $post
@@ -78,21 +71,19 @@ class CommentController extends Controller
     }
 
     /**
-     * Delete a specific comment for a post and redirect back to the post page.
+     * Delete a specific comment for a post and return a success message in JSON format.
      *
      * @param  Post  $post
      * @param  Comment  $comment
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function destroy(Post $post, Comment $comment): RedirectResponse
+    public function destroy(Post $post, Comment $comment): JsonResponse
     {
         $this->authorize('delete', $comment);
 
         // Delete the comment
         $comment->delete();
 
-        // Redirect back to the post page with a success message
-        return redirect()->route('posts.show', $post->id)
-            ->with('success', 'Comment deleted successfully.');
+        return response()->json(['message' => 'Comment deleted successfully'], 200);
     }
 }
