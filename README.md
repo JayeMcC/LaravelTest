@@ -56,8 +56,6 @@ php artisan install:api
    Posts and users are explicitly requested, but comments are implied too
 
 3. Database Design
-   Migrations
-   Model relationships
 
 4. Features
    Pagination on posts, comments, and users
@@ -96,15 +94,13 @@ SELECT * FROM job_histories;
 ```
 
 6. Validation
-   Request validation for all endpoints
-   HTTP status codes and error messages
 
 7. Testing
-   PHPUnit tests for at least two of the implemented endpoints
 
 8. Documentation
    I've opted to use swagger via external definitions rendered here: http://localhost:8000/swagger-ui/index.html#/
-   There's a button in the nav to grab a valid bearer token that makes authenticating the swagger ui easy.
+   There's a button in the nav of the web app to grab a valid bearer token that makes authenticating the swagger ui easy
+   But you could also just run the login 
 
 Things I've considered out of scope of the requirements, but potentially in the scope of the evaluation criteria:
 Security

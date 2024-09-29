@@ -3,7 +3,7 @@ properties:
   email:
     type: string
     format: email
-    example: "john.doe@example.com"
+    example: "jaye.r.mcc+laravelTestAdmin@gmail.com"
   password:
     type: string
     format: password
