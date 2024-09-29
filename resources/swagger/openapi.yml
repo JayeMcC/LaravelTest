@@ -23,8 +23,6 @@ paths:
     $ref: "./paths/comments.yml#/paths/~1posts~1{post}~1comments~1{comment}"
   /register:
     $ref: "./paths/auth.yml#/paths/~1register"
-  /login:
-    $ref: "./paths/auth.yml#/paths/~1login"
   /logout:
     $ref: "./paths/auth.yml#/paths/~1logout"
   # /users:
