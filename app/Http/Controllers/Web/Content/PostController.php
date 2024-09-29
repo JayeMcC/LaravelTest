@@ -24,19 +24,13 @@ class PostController extends Controller
   }
 
   /**
-   * Show a specific post by ID.
+   * Show a specific post.
    *
-   * @param  int  $id
+   * @param  Post  $post
    * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
    */
-  public function show(int $id)
+  public function show(Post $post)
   {
-    $post = Post::find($id);
-
-    if (!$post) {
-      abort(404, 'Post not found');
-    }
-
     return view('posts.show', compact('post'));
   }
 
@@ -71,39 +65,29 @@ class PostController extends Controller
   /**
    * Show the form to edit an existing post.
    *
-   * @param  int  $id
+   * @param  Post  $post
    * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
    */
-  public function edit(int $id)
+  public function edit(Post $post)
   {
-    $post = Post::find($id);
-
-    if (!$post) {
-      abort(404, 'Post not found');
-    }
-
     $this->authorize('update', $post);
-
     return view('posts.edit', compact('post'));
   }
 
   /**
-   * Update an existing post by ID and redirect to the updated post.
+   * Update an existing post and redirect to the updated post.
    *
    * @param  UpdatePostRequest  $request
-   * @param  int  $id
+   * @param  Post|null  $post
    * @return RedirectResponse
    */
-  public function update(UpdatePostRequest $request, int $id): RedirectResponse
+  public function update(UpdatePostRequest $request, Post $post = null): RedirectResponse
   {
-    $post = Post::find($id);
-
     if (!$post) {
       return redirect()->route('home')->with('error', 'Post not found.');
     }
 
     $this->authorize('update', $post);
-
     $post->update($request->validated());
 
     return redirect()->route('posts.show', $post->id)
@@ -113,21 +97,17 @@ class PostController extends Controller
   /**
    * Delete a specific post and redirect to the homepage.
    *
-   * @param  int  $id
+   * @param  Post|null  $post
    * @return RedirectResponse
    */
-  public function destroy(int $id): RedirectResponse
+  public function destroy(Post $post = null): RedirectResponse
   {
-    $post = Post::find($id);
-
     if (!$post) {
       return redirect()->route('home')->with('error', 'Post not found.');
     }
 
     $this->authorize('delete', $post);
-
     $post->delete();
-
     return redirect()->route('home')->with('success', 'Post deleted successfully.');
   }
 }

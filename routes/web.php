@@ -51,9 +51,7 @@ Route::middleware('auth')->group(function () {
   Route::delete('/posts/{post}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
   Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-  Route::get('/users', [UserController::class, 'index'])->name('users.index');
-  Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
-  Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+  Route::get('/users/{user}/posts', [UserController::class, 'userPosts'])->name('users.posts');
 });
 
 Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
