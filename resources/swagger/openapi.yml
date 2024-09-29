@@ -11,6 +11,8 @@ security:
   - BearerAuth: []
 
 paths:
+  /login:
+    $ref: "./paths/auth.yml#/paths/~1login"
   /posts:
     $ref: "./paths/posts.yml#/paths/~1posts"
   /posts/{post}:
