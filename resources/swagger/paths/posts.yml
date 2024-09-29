@@ -60,6 +60,8 @@ paths:
             application/json:
               schema:
                 $ref: "../schemas/Post.yml"
+        "401":
+          description: Unauthenticated
         "404":
           description: Post not found
 

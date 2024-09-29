@@ -57,4 +57,4 @@ paths:
         "204":
           description: User logged out
         "401":
-          description: Unauthorized - invalid token or user not authenticated
+          description: Unauthenticated - User is not logged in

@@ -75,12 +75,12 @@ class CommentController extends Controller
    *
    * @param  Post  $post
    * @param  Comment  $comment
-   * @return Response
+   * @return JsonResponse
    */
-  public function destroy(Post $post, Comment $comment): Response
+  public function destroy(Post $post, Comment $comment): JsonResponse
   {
     $this->authorize('delete', $comment);
     $comment->delete();
-    return response()->noContent();
+    return response()->json(null, 204);
   }
 }

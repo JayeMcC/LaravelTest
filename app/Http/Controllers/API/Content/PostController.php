@@ -68,12 +68,12 @@ class PostController extends Controller
    * Delete a specific post and return a success message in JSON format.
    *
    * @param Post $post
-   * @return Response
+   * @return JsonResponse
    */
-  public function destroy(Post $post): Response
+  public function destroy(Post $post): JsonResponse
   {
     $this->authorize('delete', $post);
     $post->delete();
-    return response()->noContent();
+    return response()->json($post, 204);
   }
 }
