@@ -7,10 +7,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../schemas/User.yml'
+              $ref: "../schemas/User.yml"
       responses:
-        '201':
-          description: User registered
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Registration successful"
+                  user:
+                    $ref: "../schemas/User.yml"
+        "400":
+          description: Invalid input data
+        "409":
+          description: Email already exists
+
   /login:
     post:
       summary: Login a user
@@ -19,13 +34,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../schemas/User.yml'
+              $ref: "../schemas/User.yml"
       responses:
-        '200':
-          description: User logged in
+        "200":
+          description: User logged in successfully
+        "401":
+          description: Invalid credentials
+
   /logout:
     post:
       summary: Logout the authenticated user
       responses:
-        '204':
+        "204":
           description: User logged out
+        "401":
+          description: Unauthorized - invalid token or user not authenticated

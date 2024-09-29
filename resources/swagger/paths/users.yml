@@ -1,7 +1,22 @@
 paths:
+  /users:
+    get:
+      summary: Get a paginated list of all users
+      responses:
+        "200":
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schemas/User.yml"
+        "403":
+          description: Forbidden - not authorized
+
   /users/{id}:
     get:
-      summary: Get a user by ID
+      summary: Get a user by ID along with their posts
       parameters:
         - name: id
           in: path
@@ -9,11 +24,67 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
-          description: A user object
+        "200":
+          description: A user object along with posts
           content:
             application/json:
               schema:
-                $ref: '../schemas/User.yml'
-        '404':
+                type: object
+                properties:
+                  user:
+                    $ref: "../schemas/User.yml"
+                  posts:
+                    type: array
+                    items:
+                      $ref: "../schemas/Post.yml"
+        "404":
+          description: User not found
+
+    patch:
+      summary: Update a user's profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+      responses:
+        "200":
+          description: User profile updated successfully
+        "400":
+          description: Invalid input
+        "403":
+          description: Forbidden - not authorized to update this user
+        "404":
+          description: User not found
+
+    delete:
+      summary: Delete a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: User deleted successfully
+        "403":
+          description: Forbidden - not authorized to delete this user
+        "404":
           description: User not found

@@ -12,10 +12,9 @@ class CommentPolicy
   /**
    * Determine whether the user can view any comments.
    *
-   * @param  User  $user
    * @return bool
    */
-  public function viewAny(User $user): bool
+  public function viewAny(): bool
   {
     return true;
   }
@@ -23,11 +22,9 @@ class CommentPolicy
   /**
    * Determine whether the user can view a specific comment.
    *
-   * @param  User  $user
-   * @param  Comment  $comment
    * @return bool
    */
-  public function view(User $user, Comment $comment): bool
+  public function view(): bool
   {
     return true;
   }

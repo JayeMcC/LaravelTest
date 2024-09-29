@@ -73,22 +73,6 @@ class UserController extends Controller
   }
 
   /**
-   * Delete a user's account (only for the user themselves or an admin).
-   *
-   * @param  User  $user
-   * @return RedirectResponse
-   */
-  public function destroy(User $user): RedirectResponse
-  {
-    $this->authorize('delete', $user);
-
-    $user->delete();
-
-    return redirect()->route('home')
-      ->with('success', 'User deleted successfully.');
-  }
-
-  /**
    * List all users (admin only).
    *
    * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory

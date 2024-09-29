@@ -12,10 +12,9 @@ class PostPolicy
   /**
    * Determine whether the user can view any posts.
    *
-   * @param  User  $user
    * @return bool
    */
-  public function viewAny(User $user): bool
+  public function viewAny(): bool
   {
     return true;
   }
@@ -23,11 +22,9 @@ class PostPolicy
   /**
    * Determine whether the user can view a specific post.
    *
-   * @param  User  $user
-   * @param  Post  $post
    * @return bool
    */
-  public function view(User $user, Post $post): bool
+  public function view(): bool
   {
     return true;
   }
