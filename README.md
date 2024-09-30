@@ -32,7 +32,7 @@ php artisan migrate:fresh --seed
 In PHP files I've marked any meta code assessment specific comments with a "#"
 
 -   If you search for "# " and filter for only .php files you will find my reasoning behind including features
-    Standard comments have been made with "//"
+-   Standard comments have been made with "//"
 
 Requirements and setup history
 
