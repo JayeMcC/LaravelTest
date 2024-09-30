@@ -54,11 +54,10 @@ class CommentTest extends TestCase
     $user = User::factory()->create();
     $token = $user->createToken('Test Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create();
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->getJson("/api/posts/{$post->id}/comments/{$comment->id}");
+      ->getJson("/api/comments/{$comment->id}");
 
     $response->assertStatus(200);
     $response->assertJson(['id' => $comment->id]);
@@ -85,11 +84,10 @@ class CommentTest extends TestCase
     $user = User::factory()->create();
     $token = $user->createToken('Test Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->patchJson("/api/posts/{$post->id}/comments/{$comment->id}", [
+      ->patchJson("/api/comments/{$comment->id}", [
         'content' => 'Updated comment'
       ]);
 
@@ -103,11 +101,10 @@ class CommentTest extends TestCase
     $nonOwner = User::factory()->create();
     $token = $nonOwner->createToken('Test Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->patchJson("/api/posts/{$post->id}/comments/{$comment->id}", [
+      ->patchJson("/api/comments/{$comment->id}", [
         'content' => 'Updated comment by non-owner'
       ]);
 
@@ -119,11 +116,10 @@ class CommentTest extends TestCase
     $user = User::factory()->create();
     $token = $user->createToken('Test Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->deleteJson("/api/posts/{$post->id}/comments/{$comment->id}");
+      ->deleteJson("/api/comments/{$comment->id}");
 
     $response->assertStatus(204);
     $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
@@ -135,11 +131,10 @@ class CommentTest extends TestCase
     $nonOwner = User::factory()->create();
     $token = $nonOwner->createToken('Test Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->deleteJson("/api/posts/{$post->id}/comments/{$comment->id}");
+      ->deleteJson("/api/comments/{$comment->id}");
     $response->assertStatus(403);
   }
 
@@ -149,11 +144,10 @@ class CommentTest extends TestCase
     $user = User::factory()->create();
     $token = $admin->createToken('Admin Token')->plainTextToken;
 
-    $post = Post::factory()->create(['user_id' => $user->id]);
-    $comment = Comment::factory()->create(['post_id' => $post->id, 'user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-      ->deleteJson("/api/posts/{$post->id}/comments/{$comment->id}");
+      ->deleteJson("/api/comments/{$comment->id}");
 
     $response->assertStatus(204);
     $this->assertDatabaseMissing('comments', ['id' => $comment->id]);

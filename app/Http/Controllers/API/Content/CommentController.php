@@ -46,24 +46,22 @@ class CommentController extends Controller
   /**
    * Show a specific comment.
    *
-   * @param  Post  $post
    * @param  Comment  $comment
    * @return JsonResponse
    */
-  public function show(Post $post, Comment $comment): JsonResponse
+  public function show(Comment $comment): JsonResponse
   {
     return response()->json($comment, 200);
   }
 
   /**
-   * Update an existing comment for a post and return it in JSON format.
+   * Update an existing comment and return it in JSON format.
    *
-   * @param  Post  $post
    * @param  CommentRequest  $request
    * @param  Comment  $comment
    * @return JsonResponse
    */
-  public function update(Post $post, CommentRequest $request, Comment $comment): JsonResponse
+  public function update(CommentRequest $request, Comment $comment): JsonResponse
   {
     $this->authorize('update', $comment);
     $comment->update($request->validated());
@@ -73,11 +71,10 @@ class CommentController extends Controller
   /**
    * Delete a specific comment for a post
    *
-   * @param  Post  $post
    * @param  Comment  $comment
    * @return JsonResponse
    */
-  public function destroy(Post $post, Comment $comment): JsonResponse
+  public function destroy(Comment $comment): JsonResponse
   {
     $this->authorize('delete', $comment);
     $comment->delete();

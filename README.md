@@ -13,7 +13,7 @@ To manually dispatch the welcome email job run the following command:
 php artisan email:send-welcome {user_id}
 ```
 
-The DB is automatically seeded, so feel free to log in with the following details, or register to gain your own:
+The DB is automatically seeded, so feel free to log in with the following details, or register to gain your own (I recommend jaye.r.mcc+laravelTestAdmin@gmail.com as it's an admin account):
 
 ```
 email: jaye.r.mcc+laravelTestAdmin@gmail.com
@@ -23,7 +23,7 @@ email: jaye.r.mcc+laravelTestUser@gmail.com
 password: password123
 ```
 
-If you need to force a re-seed due to endpoints deleting content run:
+If the above accounts don't work, run:
 
 ```
 php artisan migrate:fresh --seed

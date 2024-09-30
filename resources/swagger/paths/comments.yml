@@ -52,16 +52,10 @@ paths:
         "401":
           description: Unauthorized
 
-  /posts/{post}/comments/{comment}:
+  /comments/{comment}:
     get:
       summary: Get a specific comment
       parameters:
-        - name: post
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
         - name: comment
           in: path
           required: true
@@ -83,12 +77,6 @@ paths:
     patch:
       summary: Update a specific comment
       parameters:
-        - name: post
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
         - name: comment
           in: path
           required: true
@@ -116,12 +104,6 @@ paths:
     delete:
       summary: Delete a specific comment
       parameters:
-        - name: post
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
         - name: comment
           in: path
           required: true

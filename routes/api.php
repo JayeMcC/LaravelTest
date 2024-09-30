@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
   # Implied by part 4: Features "a. Implement pagination for list endpoints (posts, comments, users)."
   Route::get('/posts/{post}/comments', [CommentController::class, 'index']); # List all comments for a post (pagination)
   Route::post('/posts/{post}/comments', [CommentController::class, 'store']); # Create a comment on a post
-  Route::get('/posts/{post}/comments/{comment}', [CommentController::class, 'show']); # Show a specific comment
-  Route::patch('/posts/{post}/comments/{comment}', [CommentController::class, 'update']); # Update a comment
-  Route::delete('/posts/{post}/comments/{comment}', [CommentController::class, 'destroy']); # Delete a comment
+  Route::get('/comments/{comment}', [CommentController::class, 'show']); # Show a specific comment
+  Route::patch('/comments/{comment}', [CommentController::class, 'update']); # Update a comment
+  Route::delete('/comments/{comment}', [CommentController::class, 'destroy']); # Delete a comment
 
   # User-related API endpoints
   Route::get('/users', [UserController::class, 'index']); # List all users (pagination)
