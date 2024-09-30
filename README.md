@@ -53,15 +53,15 @@ php artisan install:api
 ```
 
 2. API Endpoints
-   Posts and users are explicitly requested, but comments are implied too
+-   Posts and users are explicitly requested, but comments are implied too
 
-3. Database Design
+4. Database Design
 
-4. Features
-   Pagination on posts, comments, and users
+5. Features
+-   Pagination on posts, comments, and users
 
-5. Queue implementation
-   Queued job for sending a welcome email
+6. Queue implementation
+-   Queued job for sending a welcome email
 
 ```
 app/Jobs/SendWelcomeEmail.php
@@ -98,11 +98,12 @@ SELECT * FROM job_histories;
 7. Testing
 
 8. Documentation
-   I've opted to use swagger via external definitions rendered here: http://localhost:8000/swagger-ui/index.html#/
-   There's a button in the nav of the web app to grab a valid bearer token that makes authenticating the swagger ui easy
-   But you could also just run the login 
+-   I've opted to use swagger via external definitions rendered here: http://localhost:8000/swagger-ui/index.html#/
+-   There's a button in the nav of the web app to grab a valid bearer token that makes authenticating the swagger ui easy
+-   But you could also just run the login 
 
 Things I've considered out of scope of the requirements, but potentially in the scope of the evaluation criteria:
+
 Security
 
 -   Email confirmation on account creation
@@ -174,11 +175,10 @@ npm run dev
 Things I would have liked to have done, but I'd need to sleep on it
 
 API sad path handling: http://localhost:8000/swagger-ui/index.html#/
-
--   Exception handler was redirecting
+Exception handler was redirecting api requests to web links
 -   Logging out while unauthenticated throws a redirect to welcome page
--   Attempting to hit an auth required page while unauthed throws a redirect to the login page
--   Hitting the post update while unauthed redirects to /
+-   Attempting to hit an auth required page while unauthenticated throws a redirect to the login page
+-   Hitting the post update while unauthenticated redirects to /
 
 Linting:
 
@@ -188,7 +188,7 @@ Web:
 
 -   Add pagination to web
 
-Swagger:
+Swagger UI:
 
 -   Caching issue, seems to hold onto old files even when told not to by laravel routes
 -   Temp fix is to always open in incognito
